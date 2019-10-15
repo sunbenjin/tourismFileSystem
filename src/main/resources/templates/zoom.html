@@ -14,7 +14,7 @@
 </head>
 <body>
 <div class="jq22-container" style="height: 100%;">
-    <img src="${url}" style="height: 80%;width: 80%" class="demo-img pos-center">
+    <img src="${url}" class="demo-img pos-center" >
     <script src="http://www.jq22.com/jquery/2.1.1/jquery.min.js"></script>
     <script>window.jQuery || document.write('<script src="${basePath}/zoom/js/jquery-2.1.1.min.js"><\/script>')</script>
     <script type="text/javascript" src="${basePath}/zoom/js/blowup.min.js"></script>
@@ -22,7 +22,9 @@
     <script type="text/javascript">
         $(document).ready(function () {
               $(".demo-img").blowup({
-                background : "#fff"
+                background : "#fff",
+                  "width" : 800,
+                  "height" : 800
             });
 
         })

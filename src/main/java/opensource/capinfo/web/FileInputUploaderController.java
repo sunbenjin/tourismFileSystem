@@ -385,7 +385,7 @@ public class FileInputUploaderController {
            sysResourcesFilesEntity.setFileName(fileInputParams.getFileName());
            sysResourcesFilesEntity.setFileUrl(fileInputParams.getFileUrl());
            sysResourcesFilesEntity.setDelFlag("0");
-           sysResourcesFilesEntity.setSysId(fileInputParams.getFileUniqueCode());
+           sysResourcesFilesEntity.setSysId(fileInputParams.getTableName());
            sysResourcesFilesEntity.setFileUniqueCode(fileInputParams.getFileUniqueCode());
            sysResourcesFilesEntity.setMimeType("application/pdf");
            sysResourcesFilesEntity.setFileType("pdf");
@@ -393,7 +393,7 @@ public class FileInputUploaderController {
           sysResourcesFilesEntity.setFilesDynCode(fileInputParams.getFilesDynCode());
           sysResourcesFilesEntity.setFileSize(file.length()+"");
           sysResourcesFilesEntity.setBusiId(fileInputParams.getBusiId());
-
+          sysResourcesFilesEntity.setRemarks(fileInputParams.getRemarks());
        }
       //  sysResourcesFilesEntity.setFileName();
        try{

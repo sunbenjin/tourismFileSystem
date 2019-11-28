@@ -79,7 +79,7 @@ public class FileInputUploaderStrategy implements UploaderStrategy {
     /**
      * 转化多媒体
      */
-    protected ConverterToMp4 converterMp4; //是否转化多媒体
+    protected ConverterToMp4 converterMp4; //是否转化多媒体*****************
 
 
     @Override

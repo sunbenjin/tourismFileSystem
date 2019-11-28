@@ -31,6 +31,8 @@ public class FileInputPageController {
     private String localaddress;
     @Value("${server.port}")
     private String port;
+    @Value("${priview-url}")
+    private String priviewUrl;
     /**
      *   var projectName = parameter.attr("projectName")
      *             var filesId = parameter.attr("projectName")
@@ -62,6 +64,7 @@ public class FileInputPageController {
         model.addObject("filesDynCode", filesDynCode);
         model.addObject("accessToken", accessToken);
         model.addObject("localAddress", localaddress+":"+port);
+        model.addObject("priviewUrl",priviewUrl);
         return model;
     }
 

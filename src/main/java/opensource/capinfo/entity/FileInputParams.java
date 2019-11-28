@@ -71,6 +71,6 @@ public class FileInputParams {
      */
     private Object data;
 
-    //private String accessToken;
+   private String remarks;
 	
 }

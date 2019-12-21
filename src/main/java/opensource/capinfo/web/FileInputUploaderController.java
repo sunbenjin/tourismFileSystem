@@ -1,9 +1,7 @@
 package opensource.capinfo.web;
 
-import com.sun.deploy.net.HttpUtils;
 import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
-import opensource.capinfo.utils.FileinputUtils;
 import opensource.capinfo.utils.GsonUtils;
 import opensource.capinfo.entity.FileInputParams;
 import opensource.capinfo.entity.FileOutUploader;
@@ -18,16 +16,13 @@ import opensource.capinfo.uploader.uploadHandle.FtpUploaderHandle;
 import opensource.capinfo.uploader.uploaderStorage.MySqlUploaderStorage;
 import opensource.capinfo.utils.FTPUtils;
 import opensource.capinfo.utils.ResultData;
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.ui.Model;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;

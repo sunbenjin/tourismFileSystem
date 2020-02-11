@@ -1,0 +1,72 @@
+spring:
+  #生产环境配置
+  profiles: prod
+  datasource:
+    url: jdbc:mysql://localhost:3306/fileinputdb?useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull
+    username: root
+    password: root
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.jdbc.Driver
+    filters: stat
+    maxActive: 20
+    initialSize: 1
+    maxWait: 60000
+    minIdle: 1
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: select 'x'
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    poolPreparedStatements: true
+    maxOpenPreparedStatements: 20
+  jpa:
+    hibernate:
+      ddl-auto: update
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    show-sql: true
+    open-in-view: true
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
+  http:
+    encoding:
+      charset: utf-8
+      force: true
+      enabled: true
+  mvc:
+    view:
+      prefix: /templates
+server:
+  tomcat:
+    uri-encoding: UTF-8
+  port: 8001
+uploader:
+  ##生产环境配置  E:\software\ftpserver\file-transform-temp\ffmpeg
+  basePath: C\:/tourism/tourismfileService/
+  ffmpegpath: C:\\software\\ftpserver\\file-transform-temp\\ffmpeg\\ffmpeg.exe
+  mencoderpath: C:\\software\\ftpserver\\file-transform-temp\\ffmpeg\\mencoder.exe
+  avifilepath: C:\\software\\ftpserver\\file-transform-temp\\ffmpeg\\temp.avi
+  displayPath: http://39.97.230.101:${server.port}/image/
+  converMp4: true
+  converType: asx,asf,mpg,wmv,3gp,mov,avi,wmv9,rm,rmvb
+  tempPath: C:\\software\\ftpserver\\temp
+  ftpserver:
+    port: 12121
+    name: admin
+    password: admin
+    #生产环境配置
+    homeDirectory: C:\\software\\ftpserver
+    path: ftp://admin:admin@localhost:12121/
+beetl:
+  resource-auto-check: true       #热加载beetl模板，开发时候用
+  delimiter-statement-start:
+  delimiter-statement-end:
+beetlsql:
+  enabled: false
+
+accessurl: http://localhost:8080,http://localhost:8001,http://39.97.230.101:18080
+
+

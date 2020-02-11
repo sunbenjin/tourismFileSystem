@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -46,27 +47,33 @@ public class FileInputPageController {
      */
     @GetMapping("index")
     public ModelAndView test(ModelAndView model, HttpServletRequest request){
-        model.setViewName("/index");
-        String projectName = request.getParameter("projectName");
-        String filesId =  request.getParameter("filesId");
-        String buisId = request.getParameter("buisId");
-        String fileUniqueCode = request.getParameter("fileUniqueCode");
-        String tableName = request.getParameter("tableName");
-        String fileReadOnly = request.getParameter("fileReadOnly");
-        String filesDynCode = request.getParameter("filesDynCode");
-        String accessToken = request.getParameter("accessToken");
-        model.addObject("projectName",projectName);
-        model.addObject("filesId",filesId);
-        model.addObject("buisId",buisId);
-        model.addObject("fileUniqueCode",fileUniqueCode);
-        model.addObject("tableName",tableName);
-        model.addObject("fileReadOnly",fileReadOnly);
-        model.addObject("filesDynCode", filesDynCode);
-        model.addObject("accessToken", accessToken);
-        model.addObject("localAddress", localaddress+":"+port);
-        model.addObject("priviewUrl",priviewUrl);
-        return model;
-    }
+
+        try {
+            model.setViewName("/index");
+            String projectName = request.getParameter("projectName");
+            String filesId =  request.getParameter("filesId");
+            String buisId = request.getParameter("buisId");
+            String fileUniqueCode = request.getParameter("fileUniqueCode");
+            String tableName = request.getParameter("tableName");
+            String fileReadOnly = request.getParameter("fileReadOnly");
+            String filesDynCode = request.getParameter("filesDynCode");
+            String accessToken = request.getParameter("accessToken");
+            model.addObject("projectName",projectName);
+            model.addObject("filesId",filesId);
+            model.addObject("buisId",buisId);
+            model.addObject("fileUniqueCode",fileUniqueCode);
+            model.addObject("tableName",tableName);
+            model.addObject("fileReadOnly",fileReadOnly);
+            model.addObject("filesDynCode", filesDynCode);
+            model.addObject("accessToken", accessToken);
+            model.addObject("localAddress", localaddress+":"+port);
+            model.addObject("priviewUrl",priviewUrl);
+            return model;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+}
 
     public static void main(String[] args) {
         for(int i=0; i<10; i++){

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <style>
+        body {margin-left: 0px;margin-top: 0px;margin-right: 0px;margin-bottom: 0px;overflow: hidden;}
+    </style>
+    <title>测试</title>
+</head>
+<body>
+<script src="messenger.js"></script>
+<iframe src='http://localhost:63343/WebDemo/fileInput/index.html' width='100%' height='100px' frameborder='0' name="_blank" id="_blank" ></iframe>
+
+</body>
+<script>
+    debugger;
+    var messenger = new Messenger('parent', 'MessengerDemo');
+    var childFrame = document.getElementById('childFrame');
+    messenger.addTarget(childFrame.contentWindow, 'childFrame');
+
+    var sendMessage = function(v){
+        messenger.targets['childFrame'].send(v);
+    }
+    messenger.listen(function (msg) {
+        var cf = document.getElementById("childFrame");
+        var heightMs =parseInt(msg)+20;
+        //alert(heightMs);
+        cf.height = heightMs+"px";
+    });
+</script>
+
+</html>

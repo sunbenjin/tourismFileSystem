@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>测试</title>
+    <script src="./jquery/3.4.1/dist/jquery.js"></script>
+    <link href="./bootstrap/3.3.7/css/bootstrap.css" rel="stylesheet" />
+    <link href="./bootstrap-fileinput/5.0.1/css/fileinput.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous"/>
+    <link href="./bootstrap-fileinput/5.0.1/themes/explorer-fa/theme.css" media="all" rel="stylesheet" type="text/css"/>
+    <script src="./bootstrap/3.3.7/js/bootstrap.js"></script>
+    <script src="./bootstrap-fileinput/5.0.1/js/plugins/piexif.js" type="text/javascript"></script>
+    <script src="./bootstrap-fileinput/5.0.1/js/plugins/sortable.js" type="text/javascript"></script>
+    <script src="./bootstrap-fileinput/5.0.1/js/fileinput.js" type="text/javascript"></script>
+    <script src="./bootstrap-fileinput/5.0.1/js/locales/zh.js" type="text/javascript"></script>
+    <script src="./bootstrap-fileinput/5.0.1/themes/explorer-fa/theme.js" type="text/javascript"></script>
+</head>
+<body>
+    <div class="file-loading">
+        <input id="upload" name="kartik-input-700[]" type="file" multiple>
+    </div>
+</body>
+
+<script>
+    $("#upload").fileinput({
+        language: "zh",
+        theme: "fa",
+        uploadUrl: "/enclosure/fileInput/uploader",
+        uploadExtraData:{'buisId':'1','fileUniqueCode':'测试数据','tableName':'表名','filesDynCode':''+11122+''},
+        allowedFileExtensions: ['pdf','jpg', 'png', 'gif','mp3','mp4','doc','docx','zip','avi'],
+        showUpload: false, //是否显示上传按钮
+        uploadAsync:true,
+        overwriteInitial: false,
+        initialPreviewAsData: true,
+        showBrowse:false,
+        browseOnZoneClick:true,
+        preferIconicZoomPreview: true,
+        initialPreviewAsData:true, //确定您是仅发送预览数据而不是标记
+        validateInitialCount: true,
+        autoOrientImage:true,//自动检测图像方向,
+        initialPreviewDownloadUrl: '/enclosure/fileInput/download',
+        deleteUrl: "/enclosure/fileInput/delete"
+    }).on('filebatchselected', function(event, files) {
+        $(this).fileinput("upload");
+    });
+
+</script>
+</html>

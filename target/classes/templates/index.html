@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+@ var basePath = request.scheme+"://"+request.serverName+":"+request.serverPort;
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>测试</title>
+    <link href="${basePath}/webjars/bootstrap/3.3.7/css/bootstrap.css" rel="stylesheet" />
+    <link href="${basePath}/webjars/bootstrap-fileinput/5.0.1/css/fileinput.css" rel="stylesheet" />
+<!--    <link href="${basePath}/zoom/css/normalize.css" rel="stylesheet" />-->
+    <link href="${basePath}/webjars/bootstrap-fileinput/5.0.1/css/fileinput.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous"/>
+    <link href="${basePath}/webjars/bootstrap-fileinput/5.0.1/themes/explorer-fa/theme.css" media="all" rel="stylesheet" type="text/css"/>
+<!--    <link rel="stylesheet" type="text/css" href="${basePath}/zoom/demo/styles/index.css" />
+    <link rel="stylesheet" type="text/css" href="${basePath}/zoom/demo/styles/prism.css" />-->
+    <script src="${basePath}/webjars/jquery/3.1.0/jquery.js"></script>
+
+    <script src="${basePath}/webjars/bootstrap-fileinput/5.0.1/js/plugins/piexif.js" type="text/javascript"></script>
+    <script src="${basePath}/webjars/bootstrap-fileinput/5.0.1/js/plugins/sortable.js" type="text/javascript"></script>
+    <script src="${basePath}/fileInput/bootstrap/3.3.7/js/bootstrap.js"></script>
+    <script src="${basePath}/fileInput/bootstrap-fileinput/5.0.1/js/fileinput.js" type="text/javascript"></script>
+    <script src="${basePath}/fileInput/bootstrap-fileinput/5.0.1/js/locales/zh.js" type="text/javascript"></script>
+    <script src="${basePath}/fileInput/bootstrap-fileinput/5.0.1/themes/explorer-fa/theme.js" type="text/javascript"></script>
+    <script src="${basePath}/fileInput/messenger.js" type="text/javascript"></script>
+  <!--  <script type="text/javascript" src="${basePath}/zoom/js/blowup.min.js"></script>
+    <script type="text/javascript" src="${basePath}/zoom/demo/scripts/prism.js"></script>-->
+
+    <style type="text/css">
+
+        .jzoom {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            -webkit-transform: translate(-50%,-50%);
+            -ms-transform: translate(-50%,-50%);
+            -o-transform: translate(-50%,-50%);
+            transform: translate(-50%,-50%);
+            width: 300px;
+            height: 372px;
+        }
+        .jzoom img { border:3px solid #fff;}
+    </style>
+</head>
+
+
+<body>
+<div class="file-loading" id="fileLoadDiv">
+    <input id="${filesId}" name="kartik-input-700[]" type="file" multiple>
+</div>
+</body>
+
+<script>
+    //var messenger = new Messenger('childFrame', 'MessengerDemo');
+    var temp = tempBusiId();
+
+
+    function Message(messengerName, projectName){
+        //debugger;
+        var messenger = new Messenger(messengerName, projectName);
+        messenger.addTarget(window.parent, 'parent');
+        return function(message){
+            if(message==undefined||message==null||message==''){
+                messenger.targets['parent'].send(document.body.offsetHeight);
+            }else{
+                messenger.targets['parent'].send(message);
+            }
+        };
+    }
+    var msg = new Message("${filesId}","${projectName}");
+    function AutoMonitorWidthChange (){
+        var last_width = document.body.offsetWidth;
+        var flag = true; //true 表示需要监控窗口进行调解。
+
+        return  {
+            last_width:document.body.offsetWidth,
+            enable:function(){
+                flag = true;
+            },
+            unEnable:function(){
+                flag = false;
+            },
+            autoWindowOffsetWidthChange:function(){
+                $(window).resize(function(){
+                    //debugger;
+                    //("resize 变更:"+last_width+":"+document.body.offsetWidth);
+                    if(flag==true){
+                        if(last_width!=document.body.offsetWidth){
+                            msg();
+                            last_width=document.body.offsetWidth;
+                        }
+                    }else{
+                        flag = false;
+                    }
+                });
+            }
+        }
+    }
+    var auto =new AutoMonitorWidthChange();
+    auto.enable();
+    auto.autoWindowOffsetWidthChange();
+
+    /**
+     * {
+            error: 'An error exception message if applicable',
+            initialPreview: [
+                // initial preview thumbnails for server uploaded files if you want it displayed immediately after upload
+            ],
+            initialPreviewConfig: [
+                // configuration for each item in initial preview
+            ],
+            initialPreviewThumbTags: [
+                // initial preview thumbnail tags configuration that will be replaced dynamically while rendering
+            ],
+            append: true // whether to append content to the initial preview (or set false to overwrite)
+        }
+     *
+     * 如果业务表为空的话，生成一个temp- 打头的临时表ID ，
+     */
+
+    function FileInputServer(){
+        var busiId = '${buisId}';
+        if (busiId == "") {
+            busiId = temp;
+        }
+        var fileUniqueCode = '${fileUniqueCode}';
+        var tableName = '${tableName}';
+        var fileInputData = function (busiId,fileUniqueCode,callback) {
+           // console.log('${localAddress}');
+            $.ajax({
+                url: '${localAddress}/enclosure/fileInput/init',
+                data: {'busiId':busiId, 'fileUniqueCode':fileUniqueCode },
+                dataType: "json",
+                type: 'post',
+                success: function (data) {
+                    // debugger;
+                    callback(data);
+                }
+            });
+        }
+        fileInputData(busiId,fileUniqueCode,function(data){
+           // console.log(data);
+            var initialPreview = data.initialPreview;
+            var initialPreviewConfig = data.initialPreviewConfig;
+            //console.log(initialPreview);
+            //console.log(initialPreviewConfig);
+            let readOnly = '${fileReadOnly}';
+            if(readOnly!='false'){
+                $("#${filesId}").attr("readonly","readonly");
+            }else{
+                $('#${filesId}').removeAttr("readonly");
+            }
+
+            $("#${filesId}").fileinput({
+                language: "zh",
+                theme: "fa",
+                uploadUrl: "${localAddress}/enclosure/fileInput/uploader",
+                uploadExtraData:{'buisId':'${buisId}','fileUniqueCode':'${fileUniqueCode}','tableName':'${tableName}','filesDynCode':'${filesDynCode}'},
+                allowedFileExtensions: ['pdf','jpg', 'png','txt','gif','mp3','mp4','doc','docx','zip','avi','jpeg'],
+                showUpload: false, //是否显示上传按钮
+                initialPreview:initialPreview,
+                initialPreviewConfig:initialPreviewConfig,
+                uploadAsync:true,
+                overwriteInitial: false,
+                showBrowse:false,
+                browseOnZoneClick:fileReadOnly(),
+                layoutTemplates:showDelBtnByFileReadOnly(),
+                showClose:false,
+                showRemove:false,
+                preferIconicZoomPreview: true,
+                initialPreviewAsData:true, //确定您是仅发送预览数据而不是标记
+                validateInitialCount: true,
+                previewFileIconSettings: {
+                    'zip': '<i class="fas fa-file-archive text-muted"></i>',
+                },
+                previewFileExtSettings: {
+                    'zip': function(ext) {
+                        return ext.match(/(zip|rar|tar|gzip|gz|7z)$/i);
+                    }
+                },
+                autoOrientImage:true,//自动检测图像方向,
+                getHeaderToken:function(){
+                    return "${accessToken}";
+                },
+                getPreviewHeight:function(height){ //自定义方法
+                    msg(height);
+                 //   $('.file-zoom-detail').jzoom({bgColor: "#222"});
+                    auto.unEnable();//暂时关闭响应
+                    //auto.enable();
+                    //auto.autoWindowOffsetHeightChange();
+                },
+                initialPreviewDownloadUrl: '${localAddress}/enclosure/fileInput/download',
+                deleteUrl: "${localAddress}/enclosure/fileInput/delete"
+            }).on('filebatchselected', function(event, files) {
+                $(this).fileinput("upload");
+                //alert("上传完变更");
+               // alert("执行");
+              //  $('.file-zoom-detail').jzoom({bgColor: "#222"});
+                msg();
+            });
+            $(".kv-file-zoom").attr("disabled",false);
+            msg();
+            auto.enable();
+
+            $("#kvFileinputModal").on('hide.bs.modal', function () {
+                //alert('11');
+                auto.enable();
+                msg();
+            })
+        });
+    }
+
+
+    FileInputServer.prototype.getUUID = function(len, radix){
+        var chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.split('');
+        var uuid = [],
+            i;
+        radix = radix || chars.length;
+
+        if (len) {
+            // Compact form
+            for (i = 0; i < len; i++) uuid[i] = chars[0 | Math.random() * radix];
+        } else {
+            // rfc4122, version 4 form
+            var r;
+            // rfc4122 requires these characters
+            uuid[8] = uuid[13] = uuid[18] = uuid[23] = '-';
+            uuid[14] = '4';
+            // Fill in random data.  At i==19 set the high bits of clock sequence as
+            // per rfc4122, sec. 4.1.5
+            for (i = 0; i < 36; i++) {
+                if (!uuid[i]) {
+                    r = 0 | Math.random() * 16;
+                    uuid[i] = chars[(i == 19) ? (r & 0x3) | 0x8 : r];
+                }
+            }
+        }
+        return uuid.join('');
+    }
+
+
+    function tempBusiId() {
+        var temp = uuid(32,16);
+        return "temp-"+temp;
+    }
+
+    function fileReadOnly() {
+        let fileReadOnly = '${fileReadOnly}';
+        //console.log(fileReadOnly);
+        //alert(fileReadOnly);
+        if (fileReadOnly == 'false') {
+            //文件不是只读的，那么是否有区域点击事件应是true
+            return true;
+        } else {
+            //文件是只读的，那么是否有区域点击事件应是false
+            return false;
+        }
+    }
+
+    function showDelBtnByFileReadOnly() {
+        let fileReadOnly = '${fileReadOnly}';
+        if (fileReadOnly == 'false') {
+            return {};
+        } else {
+            return {
+                actionDelete:''
+            };
+        }
+
+    }
+
+
+
+
+    function uuid(len, radix) {
+        var chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.split('');
+        var uuid = [],
+            i;
+        radix = radix || chars.length;
+
+        if (len) {
+            // Compact form
+            for (i = 0; i < len; i++) uuid[i] = chars[0 | Math.random() * radix];
+        } else {
+            // rfc4122, version 4 form
+            var r;
+            // rfc4122 requires these characters
+            uuid[8] = uuid[13] = uuid[18] = uuid[23] = '-';
+            uuid[14] = '4';
+            // Fill in random data.  At i==19 set the high bits of clock sequence as
+            // per rfc4122, sec. 4.1.5
+            for (i = 0; i < 36; i++) {
+                if (!uuid[i]) {
+                    r = 0 | Math.random() * 16;
+                    uuid[i] = chars[(i == 19) ? (r & 0x3) | 0x8 : r];
+                }
+            }
+        }
+        return uuid.join('');
+    }
+
+
+
+    var sendHeight =function(height){
+        if(height==undefined||height==''||height==null){
+            msg.send(document.body.offsetHeight);
+        }else{
+            msg(height);
+        }
+    }
+
+
+    $(function(){
+        //debugger;
+        //alert("页面加载完变更"
+        //为何不起作用？
+        new FileInputServer();
+
+    });
+
+
+
+</script>
+
+</html>
